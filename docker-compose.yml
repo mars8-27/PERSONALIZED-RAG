@@ -1,0 +1,20 @@
+﻿services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: vaultrag_qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: vaultrag_vllm
+    ports:
+      - "8001:8000"
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    command: >
+      --model meta-llama/Llama-3.1-8B-Instruct
+      --max-model-len 4096
+      --gpu-memory-utilization 0.85
